@@ -30,18 +30,22 @@
 # get the value of the mean
 #
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
-  set <- function(y) {
-    x <<- y
-    m <<- NULL
-  }
-  get <- function() x
-  setmean <- function(mean) m <<- mean
-  getmean <- function() m
-  list(set = set, get = get,
-       setmean = setmean,
-       getmean = getmean)
-
+#   m <- NULL
+#   set <- function(y) {
+#     x <<- y
+#     m <<- NULL
+#   }
+#   get <- function() x
+#   setmean <- function(mean) m <<- mean
+#   getmean <- function() m
+#   list(set = set, get = get,
+#        setmean = setmean,
+#        getmean = getmean)
+    key <- "http://mytext.com"
+    value <- "This is the content I downloaded"
+    cacheEnv <- new.env()
+    assign(key, value, envir=cacheEnv)
+    get(key, envir=cacheEnv)
 }
 #
 #
@@ -53,16 +57,24 @@ makeCacheMatrix <- function(x = matrix()) {
 # setmean function.
 #
 cacheSolve <- function(x, ...) {
-  m <- NULL
-  set <- function(y) {
-    x <<- y
-    m <<- NULL
+#   m <- NULL
+#   set <- function(y) {
+#     x <<- y
+#     m <<- NULL
+#   }
+#   get <- function() x
+#   setmean <- function(mean) m <<- mean
+#   getmean <- function() m
+#   list(set = set, get = get,
+#        setmean = setmean,
+#        getmean = getmean)
+#       ## Return a matrix that is the inverse of 'x'
+    if (exists(url, envir=cacheEnv)) {
+      return(get(url, envir=cacheEnv))
+    }
+    
+    file <- content(GET(url))
+    assign(url, file, envir=cacheEnv)
+    
+    file
   }
-  get <- function() x
-  setmean <- function(mean) m <<- mean
-  getmean <- function() m
-  list(set = set, get = get,
-       setmean = setmean,
-       getmean = getmean)
-      ## Return a matrix that is the inverse of 'x'
-}
