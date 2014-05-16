@@ -29,6 +29,25 @@
 # set the value of the mean
 # get the value of the mean
 #
+
+#Examples
+simulate <- function(mean, sd) {
+  # 1. Try to load cached data, if already generated
+  key <- list(mean, sd)
+  data <- loadCache(key)
+  if (!is.null(data)) {
+    cat("Loaded cached data\n")
+    return(data);
+  }
+  # 2. If not available, generate it.
+  cat("Generating data from scratch ... ")
+  data <- rnorm(1000, mean=mean, sd=sd)
+  Sys.sleep(1) # Emulate slow algorithm
+  cat("ok\n")
+  saveCache(data, key=key, comment="simulate()")
+  data;
+}
+
 makeCacheMatrix <- function(x = matrix()) {
 #   m <- NULL
 #   set <- function(y) {
@@ -47,7 +66,6 @@ makeCacheMatrix <- function(x = matrix()) {
     assign(key, value, envir=cacheEnv)
     get(key, envir=cacheEnv)
 }
-#
 #
 # The following function calculates the mean of the special "vector" 
 # created with the above function. However, it first checks to see 
